@@ -10,6 +10,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/seeing-common-swagger/pom.xml" />
+        <option value="$PROJECT_DIR$/seeing-system/pom.xml" />
       </set>
     </option>
   </component>

@@ -1,0 +1,34 @@
+server:
+  port: 8088
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: seeing-api
+  datasource:
+    druid:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/seeing?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.ym.seeing.api.domain
+
+captcha:
+  width: 90
+  height: 90
+  codeCount: 2
+  thickness: 2
+
+
+

@@ -23,12 +23,17 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <spring-boot.version>2.7.2</spring-boot.version>
+        <shiro.version>1.9.0</shiro.version>
+        <transmittable.version>2.6.1</transmittable.version>
 
         <knife4j.version>3.0.2</knife4j.version>
         <hutool.version>5.4.3</hutool.version>
         <mybatis.version>3.4.3</mybatis.version>
-        <fastjson.version>1.2.76</fastjson.version>
+        <fastjson.version>2.0.12</fastjson.version>
         <lombok.version>1.18.24</lombok.version>
+        <jwt.version>3.16.0</jwt.version>
+        <mysql.version>8.0.23</mysql.version>
+        <durid.version>1.2.15</durid.version>
     </properties>
 
     <dependencyManagement>
@@ -44,14 +49,45 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${durid.version}</version>
+            </dependency>
+
+            <!-- JSON 解析器和生成器 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
 
@@ -87,7 +123,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--                <version>2.5.1</version>-->
                 <configuration>
                     <excludes>
                         <exclude>
