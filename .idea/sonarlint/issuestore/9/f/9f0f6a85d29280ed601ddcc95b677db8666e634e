@@ -1,0 +1,12 @@
+
+m
+java:S3776:"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(¦¬ÿıÿÿÿÿ
+V
+java:S1854€":Remove this useless assignment to local variable "config".(Ï‡¢Ñúÿÿÿÿ
+G
+java:S1481€"+Remove this unused "config" local variable.(Ï‡¢Ñúÿÿÿÿ
+S
+java:S1854"<Remove this useless assignment to local variable "username".(®Ô”
+D
+java:S1481"-Remove this unused "username" local variable.(®Ô”
+^	java:S125Â"<This block of commented-out lines of code should be removed.(‹úşšÿÿÿÿÿ8‡Ê‘˜Ë0

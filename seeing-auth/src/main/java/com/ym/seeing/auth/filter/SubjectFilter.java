@@ -1,6 +1,8 @@
 package com.ym.seeing.auth.filter;
 
+import com.ym.seeing.rpc.service.IRemoteUserService;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Author: Yangmiao
@@ -8,4 +10,8 @@ import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
  * @Desc:
  */
 public class SubjectFilter extends BasicHttpAuthenticationFilter {
+
+
+
+
 }

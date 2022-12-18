@@ -13,6 +13,7 @@
         <module name="seeing-core" />
         <module name="seeing-common-swagger" />
         <module name="seeing-common-datasource" />
+        <module name="seeing-rpc" />
         <module name="seeing-auth" />
       </profile>
     </annotationProcessing>

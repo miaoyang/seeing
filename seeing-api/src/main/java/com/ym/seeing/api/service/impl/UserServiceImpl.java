@@ -37,7 +37,20 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUsers(User user) {
-        return null;
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (user.getId() != null){
+            lambdaQueryWrapper.eq(User::getId,user.getId());
+        }
+        if (user.getEmail() != null){
+            lambdaQueryWrapper.eq(User::getEmail,user.getEmail());
+        }
+        if (user.getUid() != null){
+            lambdaQueryWrapper.eq(User::getUid,user.getUid());
+        }
+        if (user.getToken() != null){
+            lambdaQueryWrapper.eq(User::getToken,user.getToken());
+        }
+        return userMapper.selectOne(lambdaQueryWrapper);
     }
 
     @Override

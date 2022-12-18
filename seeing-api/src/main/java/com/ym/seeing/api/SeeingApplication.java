@@ -5,14 +5,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @Author: Yangmiao
  * @Date: 2022/11/18 09:54
  * @Desc:
  */
-//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-//@MapperScan(basePackages = "com.ym.seeing.api.mapper")
+
+@ComponentScan(basePackages = {"com.ym.seeings"})
+@EnableFeignClients
 @SpringBootApplication
 public class SeeingApplication {
 

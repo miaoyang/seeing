@@ -1,3 +1,6 @@
 
-^	java:S110
-"=This class has 12 parents which is greater than 5 authorized.(û¬©ùÿÿÿÿ8Û ´ªÉ0
+W	java:S110"=This class has 12 parents which is greater than 5 authorized.(û¬©ùÿÿÿÿ
+f
+java:S1128"IRemove this unused import 'com.ym.seeing.rpc.service.IRemoteUserService'.(Ø‰Ùé8ÍµØ¿Ë0
+u
+java:S1128"SRemove this unused import 'org.springframework.beans.factory.annotation.Autowired'.(¡¸Îùÿÿÿÿ8ÍµØ¿Ë0

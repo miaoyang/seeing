@@ -1,0 +1,23 @@
+
+k
+java:S1192!"IDefine a constant instead of duplicating this literal "password" 3 times.(±Á¡Âüÿÿÿÿ8‡¨µÇÉ0
+h
+java:S1192,"FDefine a constant instead of duplicating this literal "check" 4 times.(Ğªš·øÿÿÿÿ8ˆ¨µÇÉ0
+h
+java:S1192"FDefine a constant instead of duplicating this literal "email" 3 times.(Ûˆ÷÷ÿÿÿÿÿ8ˆ¨µÇÉ0
+z
+java:S1488"]Immediately return this expression instead of assigning it to the temporary variable "token".(íƒÙÕ8Œ¨µÇÉ0
+s
+java:S3008"VRename this field "EXPIRE_TIME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“ü§8¯¨µÇÉ0
+s
+java:S3008"QRename this field "SECRET" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·Ê‡Èûÿÿÿÿ8É¬µÇÉ0
+W
+java:S1118":Add a private constructor to hide the implicit public one.(Ş‹ı8ü¬µÇÉ0
+_
+java:S18541"=Remove this useless assignment to local variable "expiresAt".(Ìë¤®üÿÿÿÿ8­µÇÉ0
+P
+java:S14811".Remove this unused "expiresAt" local variable.(Ìë¤®üÿÿÿÿ8­µÇÉ0
+U	java:S1068"9Replace this use of System.out or System.err by a logger.(ØË­8Ÿ­µÇÉ0
+U	java:S106<"9Replace this use of System.out or System.err by a logger.(´ÛÑ¯8¢­µÇÉ0
+L
+java:S1068"/Remove this unused "EXPIRE_TIME" private field.(“ü§8¤­µÇÉ0

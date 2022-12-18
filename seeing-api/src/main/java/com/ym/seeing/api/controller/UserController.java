@@ -191,7 +191,7 @@ public class UserController {
                     return result;
                 }
                 String token = JWTUtil.createToken(user);
-                Subject su = SecurityUtils.getSubject();
+//                Subject su = SecurityUtils.getSubject();
                 json.put("token", token);
                 json.put("RoleLevel", user.getLevel() == 2 ? "admin" : "user");
                 json.put("userName", user.getUserName());
@@ -212,6 +212,10 @@ public class UserController {
     }
 
 
+    @PostMapping("/getUser")
+    public User getUser(@RequestBody User user){
+       return userService.getUsers(user);
+    }
 
 
     @GetMapping("/testapp")

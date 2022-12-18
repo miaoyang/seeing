@@ -12,6 +12,7 @@
         <module>seeing-api</module>
         <module>seeing-module</module>
         <module>seeing-auth</module>
+        <module>seeing-rpc</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -19,11 +20,14 @@
     <description>Seeing pictures for love</description>
 
     <properties>
+        <seeing.version>1.0-SNAPSHOT</seeing.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
         <spring-boot.version>2.7.2</spring-boot.version>
         <shiro.version>1.9.0</shiro.version>
+        <oepnfeign.version>3.1.1</oepnfeign.version>
+        <feign-client.version>10.1.0</feign-client.version>
         <transmittable.version>2.6.1</transmittable.version>
 
         <knife4j.version>3.0.2</knife4j.version>
@@ -46,6 +50,18 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${oepnfeign.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-httpclient</artifactId>
+                <version>${feign-client.version}</version>
             </dependency>
 
             <dependency>
@@ -115,7 +131,44 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
+
+            <!--数据源-->
+            <dependency>
+                <groupId>com.ym.seeing</groupId>
+                <artifactId>seeing-common-datasource</artifactId>
+                <version>${seeing.version}</version>
+            </dependency>
+
+            <!--redis-->
+            <dependency>
+                <groupId>com.ym.seeing</groupId>
+                <artifactId>seeing-common-redis</artifactId>
+                <version>${seeing.version}</version>
+            </dependency>
+
+            <!--rpc远程调用-->
+            <dependency>
+                <groupId>com.ym.seeing</groupId>
+                <artifactId>seeing-rpc</artifactId>
+                <version>${seeing.version}</version>
+            </dependency>
+
+            <!--核心-->
+            <dependency>
+                <groupId>com.ym.seeing</groupId>
+                <artifactId>seeing-core</artifactId>
+                <version>${seeing.version}</version>
+            </dependency>
+
+            <!--swagger-->
+            <dependency>
+                <groupId>com.ym.seeing</groupId>
+                <artifactId>seeing-common-swagger</artifactId>
+                <version>${seeing.version}</version>
+            </dependency>
+
         </dependencies>
+
     </dependencyManagement>
 
     <build>
