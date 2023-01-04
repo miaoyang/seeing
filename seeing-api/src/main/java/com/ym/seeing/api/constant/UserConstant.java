@@ -23,4 +23,10 @@ public class UserConstant {
      */
     public static final String VERIFY_CODE = "verifyCode";
 
+    public static final String USER_ORIGIN = "usersOrigin";
+
+    public static final String AUTHORIZATION = "Authorization";
+
+    public static final String CHECK = "check";
+
 }

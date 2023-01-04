@@ -1,8 +1,8 @@
 package com.ym.seeing.api.controller;
 
+import com.ym.seeing.api.domain.vo.Result;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: Yangmiao
@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AdminController {
 
-    @GetMapping("/test")
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
     @ResponseBody
     public String test(){
-        return "yangmaio";
+        return "yangmaio哈哈哈哈哈哈";
+    }
+
+    @RequestMapping(value = "/testpost",method = RequestMethod.POST)
+    @ResponseBody
+    public Result testPost(){
+        return Result.ok("yangmiao");
     }
 }

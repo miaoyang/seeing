@@ -34,20 +34,19 @@ public class UserRealm extends AuthorizingRealm {
         User user = (User) subject.getPrincipal();
         ArrayList<String> roleList = new ArrayList<>();
         // 添加管理员和普通用户两种角色
-        if (user.getLevel() == 2){
+        if (user.getLevel() == 2) {
             roleList.add("admin");
             roleList.add("user");
-        }else {
+        } else {
             roleList.add("user");
         }
-        // TODO 添加权限
-
         simpleAuthorizationInfo.addRoles(roleList);
         return simpleAuthorizationInfo;
     }
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -58,9 +57,9 @@ public class UserRealm extends AuthorizingRealm {
         User user = new User();
         user.setEmail(usernamePasswordToken.getUsername());
         User u = remoteUserService.getUser(user);
-        if (u==null){
+        if (u == null) {
             return null;
         }
-        return new SimpleAuthenticationInfo(u,u.getPassword(),"");
+        return new SimpleAuthenticationInfo(u, u.getPassword(), "");
     }
 }

@@ -25,6 +25,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <spring-boot.version>2.7.2</spring-boot.version>
+        <spring-admin.version>2.7.0</spring-admin.version>
         <shiro.version>1.9.0</shiro.version>
         <oepnfeign.version>3.1.1</oepnfeign.version>
         <feign-client.version>10.1.0</feign-client.version>
@@ -38,6 +39,8 @@
         <jwt.version>3.16.0</jwt.version>
         <mysql.version>8.0.23</mysql.version>
         <durid.version>1.2.15</durid.version>
+
+        <netty-dns-native.version>4.1.73.Final</netty-dns-native.version>
     </properties>
 
     <dependencyManagement>
@@ -165,6 +168,24 @@
                 <groupId>com.ym.seeing</groupId>
                 <artifactId>seeing-common-swagger</artifactId>
                 <version>${seeing.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>2.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>2.7.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver-dns-native-macos</artifactId>
+                <version>${netty-dns-native.version}</version>
+                <classifier>osx-aarch_64</classifier>
             </dependency>
 
         </dependencies>

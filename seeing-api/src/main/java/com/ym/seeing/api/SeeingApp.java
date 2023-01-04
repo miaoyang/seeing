@@ -1,10 +1,8 @@
 package com.ym.seeing.api;
 
-import org.mybatis.spring.annotation.MapperScan;
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -14,12 +12,13 @@ import org.springframework.context.annotation.ComponentScan;
  * @Desc:
  */
 
-@ComponentScan(basePackages = {"com.ym.seeings"})
+@ComponentScan(basePackages = {"com.ym.seeing.*"})
 @EnableFeignClients
 @SpringBootApplication
-public class SeeingApplication {
+@EnableAdminServer
+public class SeeingApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(SeeingApplication.class,args);
+        SpringApplication.run(SeeingApp.class,args);
     }
 }

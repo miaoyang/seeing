@@ -104,6 +104,23 @@
             <artifactId>seeing-common-swagger</artifactId>
         </dependency>
 
+        <!-- SpringBoot Actuator -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+        </dependency>
+
+        <!--解决启动时报dns native错误-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <classifier>osx-aarch_64</classifier>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>com.ym.seeing</groupId>-->
 <!--            <artifactId>seeing-auth</artifactId>-->

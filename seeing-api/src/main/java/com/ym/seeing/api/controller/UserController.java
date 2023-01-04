@@ -2,6 +2,7 @@ package com.ym.seeing.api.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.ym.seeing.api.annotation.LogAnnotation;
 import com.ym.seeing.api.constant.RedisConstant;
 import com.ym.seeing.api.constant.ResultConstant;
 import com.ym.seeing.api.constant.UserConstant;
@@ -22,6 +23,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +57,7 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     @ApiOperation(value = "用户注册")
+    @LogAnnotation(message = "用户注册")
     public Result register(HttpServletRequest httpServletRequest,
                            @RequestParam(value = "data", defaultValue = "") String data) {
         if (StringUtils.isBlank(data)) {
@@ -147,6 +150,7 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     @ApiOperation(value = "用户登录")
+    @LogAnnotation(message = "用户登录")
     public Result login(HttpServletRequest httpServletRequest,
                         @RequestParam(value = "data", defaultValue = "") String data) {
         if (StringUtils.isBlank(data)) {
@@ -180,6 +184,8 @@ public class UserController {
                 SecurityUtils.getSubject().getSession().setTimeout(3600000);
                 JSONObject json = new JSONObject();
                 User user = (User) SecurityUtils.getSubject().getPrincipal();
+                // TODO 账号激活问题
+                user.setIsOk(1);
                 if (user.getIsOk() == 0) {
                     result.setCode(ResultConstant.AccountNoActivated.getCode());
                     result.setMsg(ResultConstant.AccountNoActivated.getMsg());

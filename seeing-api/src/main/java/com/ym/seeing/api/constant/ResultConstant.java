@@ -23,14 +23,18 @@ public enum ResultConstant {
     LoginPasswordError(4000,"登录密码错误"),
     LoginError(5000,"登录错误"),
 
+    LoginNotNow(40040,"当前未登录，请重新登录"),
+    LoginInvalid(40041,"登录失效，请重新登录！"),
+
 
     VerifyCodeExpired(4035,"验证码已失效，请重新弄获取"),
     VerifyCodeEmpty(4036,"验证码为空，请重新获取"),
     VerifyCodeError(4037,"验证码不正确"),
+    AuthenticationFail(4031,"授权请求失败"),
 
     ServerInternalError(500,"服务器内部错误");
 
-
+    public static final int Code_200 = 200;
     /**
      * 返回码
      */

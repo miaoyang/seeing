@@ -12,6 +12,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,11 +22,10 @@ import java.util.ArrayList;
  * @Date: 2022/11/20 21:57
  * @Desc: 用户的授权和认证
  */
-@Component
-@Qualifier("userRealm")
 public class UserRealm extends AuthorizingRealm {
 
    @Autowired
+   @Lazy
    private IUserService userService;
 
     @Override
@@ -41,8 +41,6 @@ public class UserRealm extends AuthorizingRealm {
         }else {
             roleList.add("user");
         }
-        // TODO 添加权限
-
         simpleAuthorizationInfo.addRoles(roleList);
         return simpleAuthorizationInfo;
     }

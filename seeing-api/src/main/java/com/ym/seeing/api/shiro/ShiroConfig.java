@@ -2,10 +2,14 @@ package com.ym.seeing.api.shiro;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,22 +19,26 @@ import java.util.Map;
  * @Desc:
  */
 @Configuration
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class ShiroConfig {
 
     @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public SubjectFilter subjectFilter(){
         return new SubjectFilter();
     }
 
     @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("defaultWebSecurityManager") DefaultWebSecurityManager defaultWebSecurityManager) {
         // 1.创建过滤器工厂
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         // 2.设置安全管理器
         bean.setSecurityManager(defaultWebSecurityManager);
-//        Map<String, Filter> beanFilters = bean.getFilters();
+        Map<String, Filter> beanFilters = bean.getFilters();
 //        beanFilters.put("subjectFilter",subjectFilter());
-//        bean.setFilters(beanFilters);
+        beanFilters.put("authc",new CrosUserFilter());
+        bean.setFilters(beanFilters);
         // 设置过滤器集合
         /**
          *  * 常用的过滤器
@@ -42,13 +50,19 @@ public class ShiroConfig {
          */
         Map<String,String> filterMap = new LinkedHashMap<>();
         filterMap.put("/verifyCode","anon");
+        // 监控接口白名单
+        filterMap.put("/actuator/**","anon");
+        filterMap.put("/applications/*","anon");
+
+        filterMap.put("/test","anon");
         filterMap.put("/verifyCodeForRegister","anon");
         filterMap.put("/verifyCodeForRetrieve","anon");
         filterMap.put("/api/**","anon");
         filterMap.put("/user/**","anon");
         filterMap.put("/ota/**","anon");
         filterMap.put("/admin/root/**","roles[admin]");
-        filterMap.put("/**","JWT");
+//        filterMap.put("/**","subjectFilter");
+        filterMap.put("/**","authc");
         // 登录失败跳转方式
         bean.setLoginUrl("/jurisError");
         // 认证失败跳转
@@ -58,6 +72,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "defaultWebSecurityManager")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm){
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(userRealm);
@@ -69,20 +84,17 @@ public class ShiroConfig {
      * @return
      */
     @Bean(name = "userRealm")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public UserRealm userRealm(){
         return new UserRealm();
     }
 
-    /**
-     * 取消自动注册自定义filter
-     */
-//    @Bean
-//    public FilterRegistrationBean<AccessFilter> accessFilterRegistration(
-//            AccessFilter accessFilter) {
-//        FilterRegistrationBean<AccessFilter> filterRegistrationBean = new
-//                FilterRegistrationBean<>(accessFilter);
-//        filterRegistrationBean.setEnabled(false);
-//        return filterRegistrationBean;
-//    }
 
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator=new DefaultAdvisorAutoProxyCreator();
+        defaultAdvisorAutoProxyCreator.setUsePrefix(true);
+        return defaultAdvisorAutoProxyCreator;
+    }
 }

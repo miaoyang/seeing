@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>seeing-job</module>
+        <module>seeing-actuator</module>
     </modules>
 
     <properties>
