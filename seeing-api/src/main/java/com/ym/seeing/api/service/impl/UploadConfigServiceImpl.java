@@ -23,6 +23,7 @@ public class UploadConfigServiceImpl implements IUploadConfigService {
     @Override
     public UploadConfig getUpdateConfig() {
         LambdaQueryWrapper<UploadConfig> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UploadConfig::getId,1);
         UploadConfig uploadConfig = uploadConfigMapper.selectOne(lambdaQueryWrapper);
         return uploadConfig;
     }

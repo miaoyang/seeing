@@ -39,6 +39,10 @@
         <jwt.version>3.16.0</jwt.version>
         <mysql.version>8.0.23</mysql.version>
         <durid.version>1.2.15</durid.version>
+        <oh-my-email.version>0.0.4</oh-my-email.version>
+        <pebble.version>3.2.0</pebble.version>
+        <baidu-api.version>4.11.0</baidu-api.version>
+        <tika.version>2.0.0</tika.version>
 
         <netty-dns-native.version>4.1.73.Final</netty-dns-native.version>
     </properties>
@@ -186,6 +190,29 @@
                 <artifactId>netty-resolver-dns-native-macos</artifactId>
                 <version>${netty-dns-native.version}</version>
                 <classifier>osx-aarch_64</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.biezhi</groupId>
+                <artifactId>oh-my-email</artifactId>
+                <version>${oh-my-email.version}</version>
+            </dependency>
+            <!--模板处理-->
+            <dependency>
+                <groupId>io.pebbletemplates</groupId>
+                <artifactId>pebble-spring-boot-starter</artifactId>
+                <version>${pebble.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${baidu-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika.version}</version>
             </dependency>
 
         </dependencies>

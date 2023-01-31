@@ -1,6 +1,7 @@
 package com.ym.seeing.api.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.ym.seeing.api.domain.ImgData;
 import com.ym.seeing.api.mapper.UserMapper;
 import com.ym.seeing.api.service.IUserService;
@@ -130,5 +131,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> getUserListByGroupId(Integer groupid) {
         return null;
+    }
+
+    @Override
+    public void updateUserUid(String uid) {
+        LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(User::getUid,uid);
+        lambdaUpdateWrapper.set(User::getIsOk,1);
+        userMapper.update(null, lambdaUpdateWrapper);
     }
 }

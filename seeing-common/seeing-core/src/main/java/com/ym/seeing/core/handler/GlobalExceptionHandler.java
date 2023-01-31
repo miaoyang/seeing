@@ -1,7 +1,9 @@
 package com.ym.seeing.core.handler;
 
+import com.ym.seeing.core.domain.Msg;
 import com.ym.seeing.core.domain.Result;
 import com.ym.seeing.core.exception.GlobalException;
+import com.ym.seeing.core.exception.StorageSourceInitException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,10 +24,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GlobalException.class)
     @ResponseBody
-    public Result handlerGlobalException(GlobalException e, HttpServletRequest request){
+    public Msg handlerGlobalException(GlobalException e, HttpServletRequest request){
         String requestURI = request.getRequestURI();
         log.error("error:{}, path:{}",e.getMessage(),requestURI);
-        return Result.fail(e.getMessage());
+        return Msg.fail(e.getMessage());
     }
+
+    @ExceptionHandler(StorageSourceInitException.class)
+    @ResponseBody
+    public Msg handlerStorageException(StorageSourceInitException e,HttpServletRequest request){
+        String requestURI = request.getRequestURI();
+        log.error("error:{}, path:{}",e.getMessage(),requestURI);
+        return Msg.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public Msg handlerStorageException(Exception e,HttpServletRequest request){
+        String requestURI = request.getRequestURI();
+        log.error("error:{}, path:{}",e.getMessage(),requestURI);
+        return Msg.fail(e.getMessage());
+    }
+
 
 }

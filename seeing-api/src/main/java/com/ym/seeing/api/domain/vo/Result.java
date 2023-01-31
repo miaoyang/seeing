@@ -31,7 +31,7 @@ public class Result implements Serializable {
     /**
      * 返回标识
      */
-    private int code;
+    private int code=200;
     /**
      * 返回数据
      */

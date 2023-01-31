@@ -1,5 +1,6 @@
 package com.ym.seeing.swagger.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -19,6 +20,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  * @Author: Yangmiao
  * @Date: 2022/11/17 20:58
- * @Desc:
+ * @Desc: Swagger基本配置
  */
 @Configuration
 @EnableOpenApi
@@ -47,7 +49,10 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo(){
         return new ApiInfoBuilder()
                 .title("Seeing 接口文档")
-                .contact(new Contact("一只想飞的猫🐱","https://github.com/miaoyang/blog","xxxxxx"))
+                .contact(new Contact("一只想飞的猫🐱",
+                        "https://github.com/miaoyang/blog",
+                        "xxxxxx")
+                )
                 .version("0.1")
                 .license("Apache")
                 .build();

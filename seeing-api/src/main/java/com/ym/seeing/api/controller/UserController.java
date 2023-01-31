@@ -1,5 +1,7 @@
 package com.ym.seeing.api.controller;
 
+import cn.hutool.core.lang.Console;
+import cn.hutool.core.util.HexUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.ym.seeing.api.annotation.LogAnnotation;
@@ -9,6 +11,9 @@ import com.ym.seeing.api.constant.UserConstant;
 import com.ym.seeing.api.domain.*;
 import com.ym.seeing.api.domain.vo.Result;
 import com.ym.seeing.api.service.*;
+import com.ym.seeing.api.shiro.SubjectFilter;
+import com.ym.seeing.api.util.SendEmailUtil;
+import com.ym.seeing.core.domain.Msg;
 import com.ym.seeing.core.domain.User;
 import com.ym.seeing.core.utils.Base64Util;
 import com.ym.seeing.core.utils.DateUtil;
@@ -24,6 +29,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,14 +64,14 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "用户注册")
     @LogAnnotation(message = "用户注册")
-    public Result register(HttpServletRequest httpServletRequest,
-                           @RequestParam(value = "data", defaultValue = "") String data) {
+    public Msg register(HttpServletRequest httpServletRequest,
+                        @RequestParam(value = "data", defaultValue = "") String data) {
         if (StringUtils.isBlank(data)) {
             log.error("register data is empty!");
-            return Result.fail(ResultConstant.InfoEmpty.getCode(), ResultConstant.InfoEmpty.getMsg());
+            return Msg.fail(ResultConstant.InfoEmpty.getCode(), ResultConstant.InfoEmpty.getInfo());
         }
-        log.info("register data: {}",data);
-        Result result = new Result();
+        log.info("register data: {}", data);
+        Msg msg = new Msg();
         JSONObject jsonObject = JSONObject.parseObject(data);
 
         String username = jsonObject.getString(UserConstant.USER_NAME);
@@ -76,25 +82,25 @@ public class UserController {
         Object cacheVerifyCode = redisService.getCacheObject(RedisConstant.VERIFY_CODE_FOR_REGISTER + httpServletRequest.getHeader(RedisConstant.VERIFY_CODE_FOR_REGISTER_HEADER));
 
         if (!VerifyUtil.checkEmail(email)) {
-            result.setCode(ResultConstant.EmailFormatError.getCode());
-            result.setMsg(ResultConstant.EmailFormatError.getMsg());
-            return result;
+            msg.setCode(ResultConstant.EmailFormatError.getCode());
+            msg.setInfo(ResultConstant.EmailFormatError.getInfo());
+            return msg;
         }
         String regex = "^\\w+$";
         if (username.length() > 20 || !username.matches(regex)) {
-            result.setCode(ResultConstant.UserNameTextExceed.getCode());
-            result.setMsg(ResultConstant.UserNameTextExceed.getMsg());
-            return result;
+            msg.setCode(ResultConstant.UserNameTextExceed.getCode());
+            msg.setInfo(ResultConstant.UserNameTextExceed.getInfo());
+            return msg;
         }
         if (cacheVerifyCode == null) {
-            result.setCode(ResultConstant.VerifyCodeExpired.getCode());
-            result.setMsg(ResultConstant.VerifyCodeExpired.getMsg());
-            return result;
+            msg.setCode(ResultConstant.VerifyCodeExpired.getCode());
+            msg.setInfo(ResultConstant.VerifyCodeExpired.getInfo());
+            return msg;
         }
         if (StringUtils.isBlank(verifyCodeForRegister)) {
-            result.setCode(ResultConstant.VerifyCodeEmpty.getCode());
-            result.setMsg(ResultConstant.VerifyCodeEmpty.getMsg());
-            return result;
+            msg.setCode(ResultConstant.VerifyCodeEmpty.getCode());
+            msg.setInfo(ResultConstant.VerifyCodeEmpty.getInfo());
+            return msg;
         }
         if (cacheVerifyCode.toString().toLowerCase().compareTo(verifyCodeForRegister.toLowerCase()) == 0) {
             User user = new User();
@@ -104,19 +110,19 @@ public class UserController {
             Integer countMail = userService.countMail(email);
             SysConfig sysConfig = sysConfigService.getState();
             if (sysConfig.getRegister() != 1) {
-                result.setCode(ResultConstant.CloseUserRegister.getCode());
-                result.setMsg(ResultConstant.CloseUserRegister.getMsg());
-                return result;
+                msg.setCode(ResultConstant.CloseUserRegister.getCode());
+                msg.setInfo(ResultConstant.CloseUserRegister.getInfo());
+                return msg;
             }
             if (countUsername == 1) {
-                result.setCode(ResultConstant.AccountExist.getCode());
-                result.setMsg(ResultConstant.AccountExist.getMsg());
-                return result;
+                msg.setCode(ResultConstant.AccountExist.getCode());
+                msg.setInfo(ResultConstant.AccountExist.getInfo());
+                return msg;
             }
             if (countMail == 1) {
-                result.setCode(ResultConstant.EmailHasRegisted.getCode());
-                result.setMsg(ResultConstant.EmailHasRegisted.getMsg());
-                return result;
+                msg.setCode(ResultConstant.EmailHasRegisted.getCode());
+                msg.setInfo(ResultConstant.EmailHasRegisted.getInfo());
+                return msg;
             }
             String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
             user.setBirthder(DateUtil.dateToStr(new Date()));
@@ -133,50 +139,52 @@ public class UserController {
                 user.setIsOk(0);
                 // 发送邮件
 
-                result.setMsg("注册成功,请注意查收邮箱尽快激活账户");
+                msg.setInfo("注册成功,请注意查收邮箱尽快激活账户");
             } else {
                 user.setIsOk(1);
-                result.setMsg("注册成功,快去登陆吧");
+                msg.setInfo("注册成功,快去登陆吧");
             }
             userService.register(user);
         } else {
-            result.setCode(ResultConstant.VerifyCodeError.getCode());
-            result.setMsg(ResultConstant.VerifyCodeError.getMsg());
+            msg.setCode(ResultConstant.VerifyCodeError.getCode());
+            msg.setInfo(ResultConstant.VerifyCodeError.getInfo());
         }
 
-        return result;
+        return msg;
     }
 
     @PostMapping("/login")
     @ResponseBody
     @ApiOperation(value = "用户登录")
     @LogAnnotation(message = "用户登录")
-    public Result login(HttpServletRequest httpServletRequest,
-                        @RequestParam(value = "data", defaultValue = "") String data) {
+    @Transactional
+    public Msg login(HttpServletRequest httpServletRequest,
+                     @RequestParam(value = "data", defaultValue = "") String data) {
         if (StringUtils.isBlank(data)) {
             log.error("login data is empty!");
-            return Result.fail(ResultConstant.InfoEmpty.getCode(), ResultConstant.InfoEmpty.getMsg());
+            return Msg.fail(String.valueOf(ResultConstant.InfoEmpty.getCode()), "", ResultConstant.InfoEmpty.getInfo());
         }
-        Result result = new Result();
+        Msg msg = new Msg();
         JSONObject jsonObject = JSONObject.parseObject(data);
         String username = jsonObject.getString(UserConstant.USER_NAME);
         String email = jsonObject.getString(UserConstant.EMAIL);
         String password = Base64Util.encryptBASE64(jsonObject.getString(UserConstant.PASSWORD).getBytes());
         String verifyCode = jsonObject.getString(UserConstant.VERIFY_CODE);
         Object cacheVerifyCode = redisService.getCacheObject(RedisConstant.VERIFY_CODE + httpServletRequest.getHeader(RedisConstant.VERIFY_CODE_HEADER));
-        if (cacheVerifyCode == null){
-            result.setCode(ResultConstant.VerifyCodeExpired.getCode());
-            result.setMsg(ResultConstant.VerifyCodeExpired.getMsg());
-            return result;
+
+        if (cacheVerifyCode == null) {
+            msg.setCode(String.valueOf(ResultConstant.VerifyCodeExpired.getCode()));
+            msg.setInfo(ResultConstant.VerifyCodeExpired.getInfo());
+            return msg;
         }
-        if (StringUtils.isBlank(verifyCode)){
-            result.setCode(ResultConstant.VerifyCodeEmpty.getCode());
-            result.setMsg(ResultConstant.VerifyCodeEmpty.getMsg());
-            return result;
+        if (StringUtils.isBlank(verifyCode)) {
+            msg.setCode(String.valueOf(ResultConstant.VerifyCodeEmpty.getCode()));
+            msg.setInfo(ResultConstant.VerifyCodeEmpty.getInfo());
+            return msg;
         }
-        if (cacheVerifyCode.toString().toLowerCase().compareTo(verifyCode.toLowerCase()) == 0){
+        if (cacheVerifyCode.toString().toLowerCase().compareTo(verifyCode.toLowerCase()) == 0) {
             Subject subject = SecurityUtils.getSubject();
-            UsernamePasswordToken tokenOBJ = new UsernamePasswordToken(email,password);
+            UsernamePasswordToken tokenOBJ = new UsernamePasswordToken(email, password);
             tokenOBJ.setRememberMe(true);
 
             try {
@@ -187,40 +195,156 @@ public class UserController {
                 // TODO 账号激活问题
                 user.setIsOk(1);
                 if (user.getIsOk() == 0) {
-                    result.setCode(ResultConstant.AccountNoActivated.getCode());
-                    result.setMsg(ResultConstant.AccountNoActivated.getMsg());
-                    return result;
+                    msg.setCode(String.valueOf(ResultConstant.AccountNoActivated.getCode()));
+                    msg.setInfo(ResultConstant.AccountNoActivated.getInfo());
+                    return msg;
                 }
                 if (user.getIsOk() < 0) {
-                    result.setCode(ResultConstant.AccountFrozen.getCode());
-                    result.setMsg(ResultConstant.AccountFrozen.getMsg());
-                    return result;
+                    msg.setCode(String.valueOf(ResultConstant.AccountFrozen.getCode()));
+                    msg.setInfo(ResultConstant.AccountFrozen.getInfo());
+                    return msg;
                 }
                 String token = JWTUtil.createToken(user);
 //                Subject su = SecurityUtils.getSubject();
                 json.put("token", token);
                 json.put("RoleLevel", user.getLevel() == 2 ? "admin" : "user");
                 json.put("userName", user.getUserName());
-                result.setData(json);
-                return result;
-            }catch (Exception e){
-                result.setCode(ResultConstant.LoginError.getCode());
-                result.setMsg(ResultConstant.LoginError.getMsg());
-                log.error("login error ",e.getMessage());
-                return result;
+                msg.setData(json);
+                log.info("login: {}", msg);
+                return msg;
+            } catch (Exception e) {
+                msg.setCode(String.valueOf(ResultConstant.LoginError.getCode()));
+                msg.setInfo(ResultConstant.LoginError.getInfo());
+                log.error("login error ", e.getMessage());
+                return msg;
             }
 
-        }else {
-            result.setCode(ResultConstant.VerifyCodeError.getCode());
-            result.setMsg(ResultConstant.VerifyCodeError.getMsg());
+        } else {
+            msg.setCode(String.valueOf(ResultConstant.VerifyCodeError.getCode()));
+            msg.setInfo(ResultConstant.VerifyCodeError.getInfo());
         }
-        return result;
+        return msg;
+    }
+
+    @RequestMapping(value = "/activation", method = RequestMethod.GET)
+    @ApiOperation(value = "激活账号")
+    public String activation(Model model, String activation, String username) {
+        User user = new User();
+        user.setUid(activation);
+        User users = userService.getUsers(user);
+        model.addAttribute("webhost", SubjectFilter.WEBHOST);
+        if (users != null && user.getIsOk() == 0) {
+            userService.updateUserUid(activation);
+            model.addAttribute("title", "激活成功");
+            model.addAttribute("name", "Hi~" + username);
+            model.addAttribute("note", "您的账号已成功激活看");
+            return "msg";
+        } else {
+            model.addAttribute("title", "操作无效");
+            model.addAttribute("name", "该页面为无效页面");
+            model.addAttribute("note", "请返回首页");
+            return "msg";
+        }
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation(value = "退出账号")
+    public Result logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        Console.log("退出账号，操作成功！");
+        return Result.ok("操作成功");
+    }
+
+    @PostMapping("/retrievePass")
+    @ResponseBody
+    @ApiOperation(value = "重设密码")
+    public Msg retrievePass(HttpServletRequest httpServletRequest,
+                            @RequestParam(value = "data", defaultValue = "") String data) {
+        Msg msg = new Msg();
+        try {
+            JSONObject jsonObj = JSONObject.parseObject(data);
+            String email = jsonObj.getString("email");
+            String retrieveCode = jsonObj.getString("retrieveCode");
+            Object verifyCodeRedis = redisService.getCacheObject("verifyCodeForRetrieve_" +
+                    httpServletRequest.getHeader("verifyCodeForRetrieve"));
+            EmailConfig emailConfig = emailConfigService.getEmail();
+            if (null == verifyCodeRedis) {
+                msg.setCode("4035");
+                msg.setInfo("验证码已失效，请重新弄获取。");
+                return msg;
+            } else if (null == retrieveCode) {
+                msg.setCode("4036");
+                msg.setInfo("验证码不能为空。");
+                return msg;
+            }
+            if ((verifyCodeRedis.toString().toLowerCase()).compareTo((retrieveCode.toLowerCase())) != 0) {
+                msg.setCode("40034");
+                msg.setInfo("验证码不正确");
+                return msg;
+            }
+            Integer ret = userService.countMail(email);
+            if (ret > 0) {
+                if (emailConfig.getIsUsing() == 1) {
+                    User u2 = new User();
+                    u2.setEmail(email);
+                    User user = userService.getUsers(u2);
+                    if (user.getIsOk() == -1) {
+                        msg.setCode("110110");
+                        msg.setInfo("当前用户已被冻结，禁止操作");
+                        return msg;
+                    }
+                    Config config = configService.getSourceType();
+                    SendEmailUtil.sendEmailFindPass(emailConfig, user.getUserName(), user.getUid(), user.getEmail(), config);
+                    msg.setInfo("重置密码的验证链接已发送至该邮箱，请前往邮箱验证并重置密码。【若长时间未收到邮件，请检查垃圾箱】");
+                } else {
+                    msg.setCode("400");
+                    msg.setInfo("本站暂未开启邮箱服务，请联系管理员");
+                }
+            } else {
+                msg.setCode("110404");
+                msg.setInfo("未找到邮箱所在的用户");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg.setCode("110500");
+            msg.setInfo("系统发生错误");
+        }
+        return msg;
+    }
+
+    @RequestMapping(value = "/retrieve", method = RequestMethod.GET)
+    public String retrieve(Model model, String activation, String cip) {
+        Integer ret = 0;
+        try {
+            User u2 = new User();
+            u2.setUid(activation);
+            User user = userService.getUsers(u2);
+            user.setIsOk(1);
+            //解密密码
+            String newPass = HexUtil.decodeHexStr(cip);
+            user.setPassword(Base64Util.encryptBASE64(newPass.getBytes()));
+            String uid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+            user.setUid(uid);
+            Integer r = userService.changeUser(user);
+            model.addAttribute("title", "成功");
+            model.addAttribute("name", "新密码:" + newPass);
+            model.addAttribute("note", "密码已被系统重置，请即使登录修改你的新密码");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("title", "抱歉");
+            model.addAttribute("name", "系统操作过程中发生错误");
+            model.addAttribute("note", "操作失败");
+        }
+        model.addAttribute("webhost", SubjectFilter.WEBHOST);
+        return "msg";
     }
 
 
     @PostMapping("/getUser")
-    public User getUser(@RequestBody User user){
-       return userService.getUsers(user);
+    public User getUser(@RequestBody User user) {
+        return userService.getUsers(user);
     }
 
 

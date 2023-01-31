@@ -44,4 +44,5 @@ public interface IUserService {
 
     List<User> getUserListByGroupId(Integer groupid);
 
+    void updateUserUid(String uid);
 }

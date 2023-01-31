@@ -1,6 +1,8 @@
 package com.ym.seeing.api.shiro;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
+import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,12 +51,22 @@ public class ShiroConfig {
          *  * role: 该资源必须得到角色权限才可访问
          */
         Map<String,String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/verifyCode","anon");
         // 监控接口白名单
         filterMap.put("/actuator/**","anon");
         filterMap.put("/applications/*","anon");
+        // swagger
+        filterMap.put("/doc.html","anon");
+        filterMap.put("/webjars/**","anon");
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/swagger-resources", "anon");
+        filterMap.put("/v2/api-docs", "anon");
+        filterMap.put("/v2/api-docs-ext", "anon");
+        filterMap.put("/configuration/security", "anon");
+        filterMap.put("/configuration/ui", "anon");
+
 
         filterMap.put("/test","anon");
+        filterMap.put("/verifyCode","anon");
         filterMap.put("/verifyCodeForRegister","anon");
         filterMap.put("/verifyCodeForRetrieve","anon");
         filterMap.put("/api/**","anon");
@@ -96,5 +108,13 @@ public class ShiroConfig {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator=new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setUsePrefix(true);
         return defaultAdvisorAutoProxyCreator;
+    }
+
+    @Bean
+    public ShiroFilterChainDefinition shiroFilterChainDefinition(){
+        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
+        chainDefinition.addPathDefinition("/doc.html", "anon");
+        chainDefinition.addPathDefinition("/webjars/**", "anon");
+        return chainDefinition;
     }
 }
