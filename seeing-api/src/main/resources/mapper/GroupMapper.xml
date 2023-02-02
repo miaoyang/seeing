@@ -9,4 +9,14 @@
             and g.user_type=#{userType}
         </if>
     </select>
+
+    <select id="getCountByUserType" resultType="integer" parameterType="integer">
+        select count(id)
+        from 'group'
+        where userType=#{userType}
+    </select>
+
+    <select id="addGroup" parameterType="com.ym.seeing.api.domain.Group">
+        insert into `group` (id,group_name,key_id,user_type,compress) values (null,#{group_name},#{key_id},#{user_type},#{compress})
+    </select>
 </mapper>

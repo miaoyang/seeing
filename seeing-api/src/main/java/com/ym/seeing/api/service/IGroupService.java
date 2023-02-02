@@ -1,6 +1,7 @@
 package com.ym.seeing.api.service;
 
 import com.ym.seeing.api.domain.Group;
+import com.ym.seeing.core.domain.Msg;
 
 import java.util.List;
 
@@ -17,4 +18,10 @@ public interface IGroupService {
     Group selectById(int i);
 
     List<Group> groupList(int i);
+
+    Msg addGroup(Group group);
+
+    Msg updateGroup(Group group);
+
+    Msg deleteGroup(Integer id);
 }

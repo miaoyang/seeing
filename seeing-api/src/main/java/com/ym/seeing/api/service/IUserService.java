@@ -20,8 +20,6 @@ public interface IUserService {
 
     Integer changeUser(User user);
 
-    Integer checkUsername(String username);
-
     Integer getUserTotal();
 
     List<User> getUserList(String username);
@@ -45,4 +43,8 @@ public interface IUserService {
     List<User> getUserListByGroupId(Integer groupid);
 
     void updateUserUid(String uid);
+
+    Integer userSetMemory(User newMemoryUser, String code);
+
+    List<User> getRecentlyUser();
 }

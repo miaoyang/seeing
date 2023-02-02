@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.seeing.api.mapper.UserMapper">
+    <select id="groupList" resultType="com.ym.seeing.core.domain.User" >
+        select count(i.id) as counts ,i.user_id,u.user_name from img_data i
+        LEFT JOIN `user` u on i.user_id = u.id
+        where i.user_id not in (0)
+        GROUP BY i.user_id ORDER BY counts DESC LIMIT 20
+    </select>
+
+
+</mapper>

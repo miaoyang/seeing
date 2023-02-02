@@ -10,6 +10,8 @@ import org.apache.shiro.subject.Subject;
  * @Desc:
  */
 public class UserUtil {
+    public static final String SYSNAME = "root,selectdomain,image,TOIMG," +
+            "user,users,admin,retrievepass,deleteimg,360,components,log";
     /**
      * 获取用户信息
      * @return
@@ -17,5 +19,26 @@ public class UserUtil {
     public static User getUser(){
         Subject subject = SecurityUtils.getSubject();
         return (User) subject.getPrincipal();
+    }
+
+    /**
+     * 是否具备管理员权限
+     * @return
+     */
+    public static boolean hasAdmin(){
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.hasRole("admin")){
+            return true;
+        }
+        return false;
+    }
+
+
+    public static Boolean checkSysName(String name){
+        boolean b = true;
+        if(SYSNAME.contains(name)){
+            b = false;
+        }
+        return b ;
     }
 }

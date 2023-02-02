@@ -3,6 +3,7 @@ package com.ym.seeing.api.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ym.seeing.api.domain.Group;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,9 @@ import java.util.List;
 @Mapper
 public interface GroupMapper extends BaseMapper<Group> {
     List<Group> groupList(int userType);
+
+    Integer getCountByUserType(Integer userType);
+
+    void addGroup(Group group);
+
 }

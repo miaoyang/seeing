@@ -1,5 +1,6 @@
 package com.ym.seeing.api.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.ym.seeing.api.domain.ImgReview;
 import com.ym.seeing.api.mapper.ImgReviewMapper;
@@ -46,5 +47,15 @@ public class ImgReviewServiceImpl implements ImgReviewService {
         LambdaUpdateWrapper<ImgReview> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         lambdaUpdateWrapper.eq(ImgReview::getUsing,1);
         return imgReviewMapper.selectOne(lambdaUpdateWrapper);
+    }
+
+    @Override
+    public ImgReview selectImgReviewByKey(Integer id) {
+        return imgReviewMapper.selectById(id);
+    }
+
+    @Override
+    public int insert(ImgReview imgReview) {
+        return imgReviewMapper.insert(imgReview);
     }
 }

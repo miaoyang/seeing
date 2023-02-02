@@ -1,18 +1,17 @@
 package com.ym.seeing.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ym.seeing.core.domain.User;
+import com.ym.seeing.api.domain.Album;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @Author: Yangmiao
- * @Date: 2022/11/18 19:40
+ * @Date: 2023/2/1 17:07
  * @Desc:
  */
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
-
-    List<User> getRecentlyUser();
+public interface AlbumMapper extends BaseMapper<Album> {
+    List<Album> selectAlbumURLList(Album album);
 }

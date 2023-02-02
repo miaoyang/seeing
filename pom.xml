@@ -34,6 +34,7 @@
         <knife4j.version>3.0.2</knife4j.version>
         <hutool.version>5.4.3</hutool.version>
         <mybatis.version>3.4.3</mybatis.version>
+        <mybatis-join.version>1.4.2.2</mybatis-join.version>
         <fastjson.version>2.0.12</fastjson.version>
         <lombok.version>1.18.24</lombok.version>
         <jwt.version>3.16.0</jwt.version>
@@ -43,6 +44,7 @@
         <pebble.version>3.2.0</pebble.version>
         <baidu-api.version>4.11.0</baidu-api.version>
         <tika.version>2.0.0</tika.version>
+        <pagehelper.version>1.4.5</pagehelper.version>
 
         <netty-dns-native.version>4.1.73.Final</netty-dns-native.version>
     </properties>
@@ -112,6 +114,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-annotation</artifactId>
                 <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join</artifactId>
+                <version>${mybatis-join.version}</version>
             </dependency>
 
             <dependency>
@@ -213,6 +220,13 @@
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
                 <version>${tika.version}</version>
+            </dependency>
+
+            <!--分页-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
             </dependency>
 
         </dependencies>

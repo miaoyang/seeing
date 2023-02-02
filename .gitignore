@@ -1,3 +1,4 @@
-target/
+./seeing-api/target/
 .idea/
 *.iml
+*.class

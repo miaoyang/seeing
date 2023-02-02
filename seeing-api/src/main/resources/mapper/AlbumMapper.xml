@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.seeing.api.mapper.AlbumMapper">
+    <select id="selectAlbumURLList" resultType="com.ym.seeing.api.domain.Album"
+            parameterType="com.ym.seeing.api.domain.Album">
+        SELECT
+        a.album_key,
+        a.album_title,
+        a.create_date,
+        a.`password`,
+        a.user_id,
+        u.user_name
+        FROM `album` a LEFT JOIN user u on a.user_id = u.id
+        <where>
+            <if test="album_key != null">
+                `album_key` like '%${albumKey}%'
+            </if>
+            <if test="user_name != null">
+                `username` like '%${userName}%'
+            </if>
+            <if test="user_id != null">
+                a.user_id = #{userId}
+            </if>
+        </where>
+        order by a.create_date
+    </select>
+
+
+</mapper>

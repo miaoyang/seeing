@@ -13,4 +13,8 @@ public interface ImgReviewService {
     public void updateByPrimaryKeySelective(ImgReview imgReview);
 
     ImgReview selectImgReviewByUsing(Integer using);
+
+    ImgReview selectImgReviewByKey(Integer id);
+
+    int insert(ImgReview imgReview);
 }
