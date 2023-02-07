@@ -2,6 +2,7 @@ package com.ym.seeing.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ym.seeing.api.domain.Album;
+import com.ym.seeing.api.domain.Images;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,4 +15,6 @@ import java.util.List;
 @Mapper
 public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> selectAlbumURLList(Album album);
+
+    List<Images> selectImgByAlbumKey(String key);
 }

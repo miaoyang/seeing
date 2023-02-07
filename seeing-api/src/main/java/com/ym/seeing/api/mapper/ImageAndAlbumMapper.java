@@ -2,7 +2,10 @@ package com.ym.seeing.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ym.seeing.api.domain.ImageAndAlbum;
+import com.ym.seeing.api.domain.Images;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @Author: Yangmiao

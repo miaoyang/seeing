@@ -21,7 +21,7 @@ public class AppClient {
     @TableField("is_use")
     private String isUse;
 
-    @TableField("win_pakc_url")
+    @TableField("win_pack_url")
     private String winPackUrl;
 
     @TableField("mac_pack_url")

@@ -130,7 +130,7 @@
 
         <dependency>
             <groupId>io.pebbletemplates</groupId>
-            <artifactId>pebble-spring-boot-starter</artifactId>
+            <artifactId>pebble-legacy-spring-boot-starter</artifactId>
         </dependency>
 
         <!--百度api接口-->
@@ -142,6 +142,11 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>
@@ -168,8 +173,9 @@
                 <includes>
                     <include>**/*.xml</include>
                     <include>**/*.yml</include>
+                    <include>**/*.html</include>
                 </includes>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </resource>
 
             <resource>
@@ -179,8 +185,10 @@
                     <include>**/*.yml</include>
                     <include>**/*.vm</include>
                     <include>**/*.txt</include>
+                    <include>**/*.html</include>
+                    <include>/static/</include>
                 </includes>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </resource>
         </resources>
 

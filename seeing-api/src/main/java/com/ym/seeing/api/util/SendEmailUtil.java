@@ -58,7 +58,7 @@ public class SendEmailUtil {
 
         try {
             PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
-            ClassPathResource classPathResource = new ClassPathResource("templates/emailRegister.html");
+            ClassPathResource classPathResource = new ClassPathResource("/templates/emailRegister.html");
             PebbleTemplate pebbleTemplate = pebbleEngine.getTemplate(classPathResource.getPath());
             Map<String, Object> context = new HashMap<>();
             context.put("username", username);
@@ -112,7 +112,7 @@ public class SendEmailUtil {
         try {
             //生成模板
             PebbleEngine engine = new PebbleEngine.Builder().build();
-            ClassPathResource classPathResource = new ClassPathResource("templates/emailFindPass.html");
+            ClassPathResource classPathResource = new ClassPathResource("/templates/emailFindPass.html");
             PebbleTemplate compiledTemplate = engine.getTemplate(classPathResource.getPath());
             Map<String, Object> context = new HashMap<>();
             context.put("username", username);

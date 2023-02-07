@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.seeing.api.mapper.KeysMapper">
+    <!-- 查询对象存储有多少种-->
+    <select id="getStorage"  resultType="com.ym.seeing.api.domain.Keys">
+        SELECT storage_type,id,
+        CASE WHEN storage_type=1 THEN '网易云'
+        WHEN storage_type=2 THEN '阿里云'
+        WHEN storage_type=3 THEN '又拍云'
+        WHEN storage_type=4 THEN '七牛云'
+        WHEN storage_type=5 THEN '本地'
+        WHEN storage_type=6 THEN '腾讯云'
+        WHEN storage_type=7 THEN 'FTP'
+        WHEN storage_type=8 THEN 'UFile'
+        ELSE  '未知' END AS storageName,
+        key_name
+        FROM `keys`  GROUP BY storage_type,id,storageName,key_name
+    </select>
+</mapper>

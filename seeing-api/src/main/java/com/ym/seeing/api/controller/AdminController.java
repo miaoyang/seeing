@@ -19,6 +19,7 @@ import com.ym.seeing.core.utils.FileUtil;
 import com.ym.seeing.core.utils.TextUtil;
 import com.ym.seeing.datasource.upload.GetSource;
 import com.ym.seeing.redis.service.RedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/admin")
+@Slf4j
 public class AdminController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -205,6 +207,7 @@ public class AdminController {
         try {
             User user = UserUtil.getUser();
             user = userService.getUsers(user);
+            log.debug("current user: {}",user.toString());
             if (user.getLevel() > 1) {
                 jsonObject.put("RecentlyUser", userService.getRecentlyUser());
                 jsonObject.put("RecentlyUploaded", imgService.getRecentlyUploaded(user.getId()));

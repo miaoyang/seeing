@@ -168,21 +168,26 @@ public class IndexController {
     public Msg getUploadInfo() {
         Msg msg = new Msg();
         JSONObject jsonObject = new JSONObject();
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        User user = UserUtil.getUser();
         try {
             UploadConfig updateConfig = uploadConfigService.getUpdateConfig();
-            jsonObject.put("suffix", updateConfig.getSuffix().split(","));
-            if (null == user) {
-                jsonObject.put("filesize", Integer.valueOf(updateConfig.getFileSizeTourists()) / 1024);
-                jsonObject.put("imgcount", updateConfig.getImgCountTourists());
-                jsonObject.put("uploadSwitch", updateConfig.getIsUpdate());
-                jsonObject.put("uploadInfo", "您登陆后才能使用此功能哦");
-            } else {
-                jsonObject.put("filesize", Integer.valueOf(updateConfig.getFileSizeUser()) / 1024);
-                jsonObject.put("imgcount", updateConfig.getImgCountUser());
-                jsonObject.put("uploadSwitch", updateConfig.getUserClose());
-                jsonObject.put("uploadInfo", "系统暂时关闭了用户上传功能");
+            log.debug("uploadConfig: {}",updateConfig);
+            if (updateConfig != null) {
+                jsonObject.put("suffix", updateConfig.getSuffix().split(","));
+                if (null == user) {
+                    jsonObject.put("filesize", Integer.valueOf(updateConfig.getFileSizeTourists()) / 1024);
+                    jsonObject.put("imgcount", updateConfig.getImgCountTourists());
+                    jsonObject.put("uploadSwitch", updateConfig.getIsUpdate());
+                    jsonObject.put("uploadInfo", "您登陆后才能使用此功能哦");
+                } else {
+                    jsonObject.put("filesize", Integer.valueOf(updateConfig.getFileSizeUser()) / 1024);
+                    jsonObject.put("imgcount", updateConfig.getImgCountUser());
+                    jsonObject.put("uploadSwitch", updateConfig.getUserClose());
+                    jsonObject.put("uploadInfo", "系统暂时关闭了用户上传功能");
+                }
+            }else {
+                msg.setInfo("默认的上传配置为空！");
+                log.error("error，默认的上传配置为空！");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,14 +355,10 @@ public class IndexController {
     }
 
     @RequestMapping("/jurisError")
-    @ResponseBody
-    public ModelAndView jurisError(HttpServletRequest request) {
+    public String jurisError(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-//        Msg msg = new Msg();
-//        msg.setCode(ResultConstant.AuthenticationFail.getCode());
-//        msg.setInfo(ResultConstant.AuthenticationFail.getInfo());
-        modelAndView.setViewName("/templates/error");
-        return modelAndView;
+        modelAndView.setViewName("/error");
+        return "error";
     }
 
     @RequestMapping("/authError")

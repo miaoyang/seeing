@@ -45,6 +45,7 @@
         <baidu-api.version>4.11.0</baidu-api.version>
         <tika.version>2.0.0</tika.version>
         <pagehelper.version>1.4.5</pagehelper.version>
+        <thymeleaf.version>2.7.0</thymeleaf.version>
 
         <netty-dns-native.version>4.1.73.Final</netty-dns-native.version>
     </properties>
@@ -207,7 +208,7 @@
             <!--模板处理-->
             <dependency>
                 <groupId>io.pebbletemplates</groupId>
-                <artifactId>pebble-spring-boot-starter</artifactId>
+                <artifactId>pebble-legacy-spring-boot-starter</artifactId>
                 <version>${pebble.version}</version>
             </dependency>
 
@@ -227,6 +228,13 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!--thymeleaf-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
+                <version>${thymeleaf.version}</version>
             </dependency>
 
         </dependencies>

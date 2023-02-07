@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ym.seeing.api.domain.Images;
 import com.ym.seeing.api.domain.ImgData;
 import com.ym.seeing.api.mapper.ImgDataMapper;
+import com.ym.seeing.api.mapper.ImgMapper;
 import com.ym.seeing.api.service.ImgDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 public class ImgDataServiceImpl implements ImgDataService {
     @Autowired
     private ImgDataMapper imgDataMapper;
+    @Autowired
+    private ImgMapper imgMapper;
 
     @Override
     public Long selectUserMemoryById(Integer id) {
@@ -32,5 +35,12 @@ public class ImgDataServiceImpl implements ImgDataService {
         }else {
             return Long.parseLong(imgData.getSizes());
         }
+    }
+
+    @Override
+    public Images selectByImgUid(String imgUid) {
+        LambdaQueryWrapper<Images> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Images::getImgUid,imgUid);
+        return imgMapper.selectOne(wrapper);
     }
 }

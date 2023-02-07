@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.seeing.api.mapper.GroupMapper">
+    <select id="groupList" resultType="com.ym.seeing.api.domain.Group" parameterType="integer">
+        SELECT g.id,g.group_name,g.key_id,g.compress,k.storage_type,k.key_name
+        FROM `group`AS g LEFT JOIN `keys` as k ON g.key_id=k.id
+        WHERE 1=1
+        <if test="user_type!=null">
+            and g.user_type=#{userType}
+        </if>
+    </select>
+
+    <select id="getCountByUserType" resultType="integer" parameterType="integer">
+        select count(id)
+        from 'group'
+        where userType=#{userType}
+    </select>
+
+    <select id="addGroup" parameterType="com.ym.seeing.api.domain.Group">
+        insert into `group` (id,group_name,key_id,user_type,compress) values (null,#{group_name},#{key_id},#{user_type},#{compress})
+    </select>
+</mapper>

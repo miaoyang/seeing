@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.seeing.api.mapper.ImgMapper">
+    <!-- 查询-->
+    <select id="selectImages" parameterType="com.ym.seeing.api.domain.Images" resultType="com.ym.seeing.api.domain.Images">
+        SELECT
+        a.id,
+        a.img_name,
+        a.img_url,
+        b.user_name,
+        a.update_time,
+        a.sizes,
+        a.abnormal,
+        a.source,
+        a.img_type,
+        a.explains,
+        a.md5_key,
+        a.img_uid,
+        a.format,
+        a.about,
+        a.violation,
+        a.id_name
+        FROM
+        img_data a
+        LEFT JOIN user b ON a.user_id = b.id
+        where
+        1=1
+        <if test="source != null">
+            and
+            a.source = #{source}
+        </if>
+        <if test="startTime != null">
+            and
+            a.update_time &gt;= #{startTime}
+        </if>
+        <if test="stopTime != null">
+            and
+            a.update_time &lt;= #{stopTime}
+        </if>
+        <if test="violation == 'true'">
+            and
+            a.violation !=""
+        </if>
+
+        <choose>
+            <when test="userId!=null and userId!=''">
+                and
+                a.user_id = #{userId}
+            </when>
+            <otherwise>
+                <if test="userName != null and userName != ''">
+                    <choose>
+                        <when test="selectType==1">
+                            and
+                            a.user_id in ( SELECT id  from `user` where user_name LIKE '%${userName}%')
+                        </when>
+                        <otherwise>
+                            and
+                            a.user_id not in ( SELECT id  from `user` where user_name LIKE '%${userName}%')
+                        </otherwise>
+                    </choose>
+                </if>
+            </otherwise>
+        </choose>
+        <if test="imgUid != null">
+            and
+            a.img_uid = #{imgUid}
+        </if>
+        <if test="idName != null and idName !=''">
+            and id_name LIKE '%${idName}%'
+        </if>
+        order by a.id desc
+    </select>
+
+    <insert  id="insertImgData" parameterType="com.ym.seeing.api.domain.Images">
+        INSERT INTO img_data (
+        id,
+        img_name,
+        img_url,
+        user_id,
+        update_time,
+        sizes,
+        abnormal,
+        `source`,
+        img_type,
+        explains,
+        md5_key,
+        img_uid,
+        `format`,
+        about,
+        violation,
+        id_name
+        )
+        select * from (
+        SELECT  NULL id,
+        #{imgName} img_name,
+        #{imgUrl} img_url,
+        #{userId} user_id,
+        #{updateTime} update_time,
+        #{sizes} sizes,
+        #{abnormal} abnormal,
+        #{source} `source`,
+        #{imgType} img_type,
+        #{explains} explains,
+        #{md5Key} md5_key,
+        #{imgUid} img_uid,
+        #{format} `format`,
+        #{about} about,
+        null violation,
+        #{idName} id_name
+        ) temp_t
+        where
+        IF((select (select check_duplicate from sys_config where id =1)=1),
+        not exists (select md5_key from img_data img_t where temp_t.md5_key = img_t.md5_key),true)
+    </insert>
+
+    <select id="getSourceMemory" resultType="long" parameterType="integer">
+        SELECT sum(sizes) as sizes FROM `img_data` where source = #{source}
+    </select>
+
+    <select id="getRecentlyUploaded" parameterType="integer" resultType="com.ym.seeing.api.domain.Images">
+        select * from img_data where user_id = #{userId}  ORDER BY update_time DESC LIMIT 20
+    </select>
+
+    <select id="getyyyy" parameterType="integer" resultType="string">
+        SELECT DISTINCT  YEAR(update_time) yyyy FROM `img_data` where
+        IFNULL(update_time,'')
+        <if test="userid != null">
+            and user_id = #{userId}
+        </if>
+    </select>
+
+    <select id="countByUpdateTime" parameterType="com.ym.seeing.api.domain.Images"
+            resultType="com.ym.seeing.api.domain.Images">
+        SELECT
+        count(id) countNum,
+        MONTH(update_time) monthNum
+        FROM
+        img_data
+        where YEAR(update_time)=#{yyyy}
+        <if test="userid != null">
+            and user_id = #{userId}
+        </if>
+        GROUP BY
+        MONTH(update_time)
+        ORDER BY
+        MONTH(update_time) ASC
+
+    </select>
+
+
+</mapper>

@@ -13,6 +13,7 @@ import com.ym.seeing.api.domain.vo.Result;
 import com.ym.seeing.api.service.*;
 import com.ym.seeing.api.shiro.SubjectFilter;
 import com.ym.seeing.api.util.SendEmailUtil;
+import com.ym.seeing.api.util.UserUtil;
 import com.ym.seeing.core.domain.Msg;
 import com.ym.seeing.core.domain.User;
 import com.ym.seeing.core.utils.Base64Util;
@@ -157,7 +158,6 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "用户登录")
     @LogAnnotation(message = "用户登录")
-    @Transactional
     public Msg login(HttpServletRequest httpServletRequest,
                      @RequestParam(value = "data", defaultValue = "") String data) {
         if (StringUtils.isBlank(data)) {
@@ -191,7 +191,7 @@ public class UserController {
                 subject.login(tokenOBJ);
                 SecurityUtils.getSubject().getSession().setTimeout(3600000);
                 JSONObject json = new JSONObject();
-                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                User user = UserUtil.getUser();
                 // TODO 账号激活问题
                 user.setIsOk(1);
                 if (user.getIsOk() == 0) {
@@ -205,7 +205,6 @@ public class UserController {
                     return msg;
                 }
                 String token = JWTUtil.createToken(user);
-//                Subject su = SecurityUtils.getSubject();
                 json.put("token", token);
                 json.put("RoleLevel", user.getLevel() == 2 ? "admin" : "user");
                 json.put("userName", user.getUserName());
@@ -248,12 +247,13 @@ public class UserController {
     }
 
     @PostMapping("/logout")
+    @ResponseBody
     @ApiOperation(value = "退出账号")
-    public Result logout() {
+    public Msg logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        Console.log("退出账号，操作成功！");
-        return Result.ok("操作成功");
+        log.debug("退出账号，操作成功！");
+        return Msg.ok("操作成功");
     }
 
     @PostMapping("/retrievePass")
@@ -347,9 +347,4 @@ public class UserController {
         return userService.getUsers(user);
     }
 
-
-    @GetMapping("/testapp")
-    public String testApp() {
-        return "seeing 一个为图而生的狂热分子，在这里能看见世界一切美好";
-    }
 }
