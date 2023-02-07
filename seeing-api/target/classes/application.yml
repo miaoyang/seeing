@@ -21,6 +21,9 @@ spring:
     admin:
       client:
         url: http://localhost:8083 # 上传到服务端server
+  thymeleaf:
+    cache: false # 关闭缓存
+    suffix: .htmlV
   redis:
     lettuce:
       max-active: 8 # 连接池最大连接数

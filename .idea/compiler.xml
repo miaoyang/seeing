@@ -18,8 +18,5 @@
         <module name="seeing-auth" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="seeing-system" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
